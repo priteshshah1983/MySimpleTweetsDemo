@@ -14,6 +14,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -21,10 +24,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     }
 
     // View lookup cache
-    private static class ViewHolder {
-        ImageView ivProfileImage;
-        TextView tvUserName;
-        TextView tvBody;
+    static class ViewHolder {
+        @InjectView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @InjectView(R.id.tvUserName) TextView tvUserName;
+        @InjectView(R.id.tvBody) TextView tvBody;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 
     @Override
@@ -34,11 +41,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
-            viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-            viewHolder.tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-            viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
