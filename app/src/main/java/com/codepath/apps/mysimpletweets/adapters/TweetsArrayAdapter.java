@@ -26,6 +26,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     // View lookup cache
     static class ViewHolder {
         @InjectView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @InjectView(R.id.tvName) TextView tvName;
         @InjectView(R.id.tvUserName) TextView tvUserName;
         @InjectView(R.id.tvBody) TextView tvBody;
 
@@ -49,7 +50,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         }
 
         // Populate the data into the template view using the data object
-        viewHolder.tvUserName.setText(tweet.getUser().getScreenName());
+        viewHolder.tvName.setText(tweet.getUser().getName());
+        viewHolder.tvUserName.setText("@" + tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
 
