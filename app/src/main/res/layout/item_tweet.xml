@@ -28,6 +28,15 @@
         android:layout_marginEnd="5dp"/>
 
     <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="\@pritesh_j_shah"
+        android:layout_alignBottom="@id/tvName"
+        android:layout_toRightOf="@id/tvName"
+        android:layout_toEndOf="@id/tvName"/>
+
+    <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,11 +46,43 @@
         android:layout_below="@id/tvName"/>
 
     <TextView
-        android:id="@+id/tvUserName"
+        android:id="@+id/tvTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="\@pritesh_j_shah"
-        android:layout_alignBottom="@id/tvName"
-        android:layout_toRightOf="@id/tvName"
-        android:layout_toEndOf="@id/tvName"/>
+        tools:text="1w"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:layout_toEndOf="@id/ivProfileImage"
+        android:layout_below="@id/tvBody">
+
+        <TextView
+            android:id="@+id/tvRetweetCount"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/retweet"
+            android:drawableStart="@drawable/retweet"
+            android:drawablePadding="5dp"
+            tools:text="1"/>
+
+        <TextView
+            android:id="@+id/tvFavoriteCount"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/favorite"
+            android:drawableStart="@drawable/favorite"
+            android:drawablePadding="5dp"
+            tools:text="1"/>
+
+    </LinearLayout>
+
 </RelativeLayout>
