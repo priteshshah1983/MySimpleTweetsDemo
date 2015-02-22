@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
+import com.codepath.apps.mysimpletweets.adapters.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -34,15 +35,28 @@ public class TimelineActivity extends ActionBarActivity {
     @InjectView(R.id.lvTweets) ListView lvTweets;
     @InjectView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
+    private long max_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ButterKnife.inject(this);
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+            }
+        });
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(aTweets);
         client = TwitterApplication.getRestClient();
+        max_id = 0;
+        aTweets.clear();
         populateTimeline();
 
         // Setup refresh listener which triggers new data loading
@@ -52,6 +66,8 @@ public class TimelineActivity extends ActionBarActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
+                max_id = 0;
+                aTweets.clear();
                 populateTimeline();
             }
         });
@@ -62,12 +78,23 @@ public class TimelineActivity extends ActionBarActivity {
                 android.R.color.holo_red_light);
     }
 
+    // Append more data into the adapter
+    public void customLoadMoreDataFromApi(int offset) {
+//        Log.d(TAG, "page = " + offset);
+        populateTimeline();
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
+    }
+
     private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(max_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                aTweets.clear();
                 aTweets.addAll(Tweet.fromJSON(json));
+                Tweet lastTweet = aTweets.getItem(aTweets.getCount() - 1);
+                max_id = lastTweet.getUid() - 1;
+//                Log.d(TAG, "max_id = " + max_id);
                 swipeContainer.setRefreshing(false);
             }
 
