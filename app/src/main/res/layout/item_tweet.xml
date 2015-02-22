@@ -43,7 +43,9 @@
         tools:text="Funniest tweet ever!"
         android:layout_toRightOf="@id/ivProfileImage"
         android:layout_toEndOf="@id/ivProfileImage"
-        android:layout_below="@id/tvName"/>
+        android:layout_below="@id/tvName"
+        android:autoLink="all"
+        android:linksClickable="true"/>
 
     <TextView
         android:id="@+id/tvTimestamp"
