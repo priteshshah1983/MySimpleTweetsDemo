@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -24,8 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
-
-    private final String TWITTER_DATE_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, R.layout.item_tweet, tweets);
@@ -68,7 +67,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         viewHolder.tvRetweetCount.setText(String.valueOf(tweet.getRetweetCount()));
         viewHolder.tvFavoriteCount.setText(String.valueOf(tweet.getFavoritesCount()));
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TWITTER_DATE_FORMAT);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TwitterClient.TWITTER_DATE_FORMAT);
             simpleDateFormat.setLenient(true);
             Date date = simpleDateFormat.parse(tweet.getCreatedAt());
             String dateString = (String) DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);

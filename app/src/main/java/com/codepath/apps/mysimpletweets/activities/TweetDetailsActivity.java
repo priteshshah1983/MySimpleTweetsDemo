@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -21,8 +22,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class TweetDetailsActivity extends ActionBarActivity {
-
-    private final String TWITTER_DATE_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
     public static final String EXTRA_TWEET = "com.codepath.apps.mysimpletweets.tweet";
 
@@ -48,7 +47,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
                 .load(tweet.getUser().getProfileImageUrl())
                 .into(ivProfileImage);
         tvBody.setText(Html.fromHtml(tweet.getBody()));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TWITTER_DATE_FORMAT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TwitterClient.TWITTER_DATE_FORMAT);
         simpleDateFormat.setLenient(true);
         try {
             Date date = simpleDateFormat.parse(tweet.getCreatedAt());
