@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         // Populate the data into the template view using the data object
         viewHolder.tvName.setText(tweet.getUser().getName());
         viewHolder.tvUserName.setText("@" + tweet.getUser().getScreenName());
-        viewHolder.tvBody.setText(tweet.getBody());
+        viewHolder.tvBody.setText(Html.fromHtml(tweet.getBody()));
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         viewHolder.tvRetweetCount.setText(String.valueOf(tweet.getRetweetCount()));
         viewHolder.tvFavoriteCount.setText(String.valueOf(tweet.getFavoritesCount()));

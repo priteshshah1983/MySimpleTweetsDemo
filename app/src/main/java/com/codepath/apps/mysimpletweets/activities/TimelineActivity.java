@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.activities;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -8,13 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
+import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TimelineActivity extends ActionBarActivity {
+public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener {
 
     private static final String TAG = TimelineActivity.class.getName();
 
@@ -37,6 +41,7 @@ public class TimelineActivity extends ActionBarActivity {
     @InjectView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     private long max_id;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class TimelineActivity extends ActionBarActivity {
         client = TwitterApplication.getRestClient();
         max_id = 0;
         aTweets.clear();
+        populateCurrentUser();
         populateTimeline();
 
         // Setup refresh listener which triggers new data loading
@@ -69,6 +75,7 @@ public class TimelineActivity extends ActionBarActivity {
                 // once the network request has completed successfully.
                 max_id = 0;
                 aTweets.clear();
+                populateCurrentUser();
                 populateTimeline();
             }
         });
@@ -77,6 +84,21 @@ public class TimelineActivity extends ActionBarActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+    private void populateCurrentUser() {
+        client.getCurrentUser(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                currentUser = User.fromJSON(response);
+                Log.d(TAG, "user populated: " + currentUser);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, errorResponse.toString());
+            }
+        });
     }
 
     // Append more data into the adapter
@@ -119,10 +141,37 @@ public class TimelineActivity extends ActionBarActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.miTweet:
-//                composeTweet();
+                showTweetDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showTweetDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        TweetFragment tweetFragment = TweetFragment.newInstance(currentUser);
+        tweetFragment.show(fragmentManager, "fragment_tweet");
+    }
+
+    @Override
+    public void onTweet(String tweet) {
+        tweet = tweet.trim();
+        Log.d(TAG, "Posting tweet to Twitter: " + tweet);
+        if (tweet.length() > 0){
+            client.postTweet(tweet, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    tweets.add(0, Tweet.fromJSON(response));
+                    aTweets.notifyDataSetChanged();
+                    Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d(TAG, errorResponse.toString());
+                }
+            });
         }
     }
 }
