@@ -31,6 +31,6 @@ The following advanced user stories are optional:
 
 Walkthrough of all user stories:
 
-![Video Walkthrough](MySimpleTweets.gif)
+![Video Walkthrough](MySimpleTweetsDemo.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
