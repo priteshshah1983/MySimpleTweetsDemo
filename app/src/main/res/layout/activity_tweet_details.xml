@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:contentDescription="@string/profile_picture_label"/>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:layout_toEndOf="@id/ivProfileImage"
+        android:layout_alignTop="@id/ivProfileImage"
+        android:paddingTop="10dp"
+        tools:text="Pritesh Shah"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:layout_toEndOf="@id/ivProfileImage"
+        android:layout_below="@id/tvName"
+        tools:text="\@pritesh_j_shah"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Funniest tweet ever!"
+        android:layout_below="@id/ivProfileImage"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="2/22/15, 6:03 PM"
+        android:layout_below="@id/tvBody"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:paddingLeft="10dp"/>
+
+    <View
+        android:id="@+id/vTimestampSeparator"
+        android:layout_below="@id/tvTimestamp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="15"
+        android:layout_below="@id/vTimestampSeparator"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/tvRetweetsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retweets_label"
+        android:layout_below="@id/vTimestampSeparator"
+        android:layout_toRightOf="@id/tvRetweetCount"
+        android:layout_toEndOf="@id/tvRetweetCount"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:paddingLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/tvFavoriteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="15"
+        android:layout_below="@id/vTimestampSeparator"
+        android:layout_toRightOf="@id/tvRetweetsLabel"
+        android:layout_toEndOf="@id/tvRetweetsLabel"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorites_label"
+        android:layout_below="@id/vTimestampSeparator"
+        android:layout_toRightOf="@id/tvFavoriteCount"
+        android:layout_toEndOf="@id/tvFavoriteCount"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:paddingLeft="5dp"/>
+
+    <View
+        android:id="@+id/vRetweetsCountSeparator"
+        android:layout_below="@id/tvRetweetCount"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        android:layout_margin="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/llActions"
+        android:layout_below="@id/vRetweetsCountSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reply"
+            android:layout_weight="1"
+            android:contentDescription="@string/reply_label"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/retweet"
+            android:layout_weight="1"
+            android:contentDescription="@string/retweet_label"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorite"
+            android:layout_weight="1"
+            android:contentDescription="@string/favorite_label"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_below="@id/llActions"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        />
+
+</RelativeLayout>
