@@ -14,7 +14,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:padding="10dp"
-        android:contentDescription="@string/profile_picture_label"/>
+        android:contentDescription="@string/profile_picture_label"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:id="@+id/tvName"

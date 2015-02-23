@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.utils.ProfilePictureHelper;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -45,6 +46,8 @@ public class TweetDetailsActivity extends ActionBarActivity {
         tvUserName.setText("@" + tweet.getUser().getScreenName());
         Picasso.with(this)
                 .load(tweet.getUser().getProfileImageUrl())
+                .fit()
+                .transform(ProfilePictureHelper.roundedCornersTranformation())
                 .into(ivProfileImage);
         tvBody.setText(Html.fromHtml(tweet.getBody()));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TwitterClient.TWITTER_DATE_FORMAT);

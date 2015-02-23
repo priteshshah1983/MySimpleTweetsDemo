@@ -103,7 +103,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TAG, errorResponse.toString());
+                Log.d(TAG, (errorResponse == null) ? "" : errorResponse.toString());
             }
         });
     }
@@ -190,7 +190,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
                         tweets.add(0, Tweet.fromJSON(response));
                         aTweets.notifyDataSetChanged();
                         progressBar.setVisibility(ProgressBar.INVISIBLE);
-                        Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_LONG).show();
                     }
 
                     @Override

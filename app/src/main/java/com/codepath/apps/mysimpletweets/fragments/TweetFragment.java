@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.codepath.apps.mysimpletweets.utils.ProfilePictureHelper;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -81,7 +82,11 @@ public class TweetFragment extends DialogFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             User user = bundle.getParcelable(EXTRA_USER);
-            Picasso.with(view.getContext()).load(user.getProfileImageUrl()).into(ivProfileImage);
+            Picasso.with(view.getContext())
+                    .load(user.getProfileImageUrl())
+                    .fit()
+                    .transform(ProfilePictureHelper.roundedCornersTranformation())
+                    .into(ivProfileImage);
             tvName.setText(user.getName());
             tvUserName.setText("@" + user.getScreenName());
         }

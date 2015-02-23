@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.utils.ProfilePictureHelper;
+import com.makeramen.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,6 +83,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
         Picasso.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
+                .fit()
+                .transform(ProfilePictureHelper.roundedCornersTranformation())
                 .into(viewHolder.ivProfileImage);
 
         // Return the completed view to render on screen
