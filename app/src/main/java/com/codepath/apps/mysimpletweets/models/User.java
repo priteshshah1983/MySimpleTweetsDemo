@@ -3,14 +3,27 @@ package com.codepath.apps.mysimpletweets.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User implements Parcelable {
+@Table(name = "Users")
+public class User extends Model implements Parcelable {
 
+    @Column(name = "name")
     private String mName;
+
+    // This is the unique id given by the server
+    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long mUid;
+
+    @Column(name = "screenName")
     private String mScreenName;
+
+    @Column(name = "profileImageUrl")
     private String mProfileImageUrl;
 
     public String getName() {

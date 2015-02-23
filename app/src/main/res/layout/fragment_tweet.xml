@@ -47,6 +47,7 @@
         android:layout_marginRight="10dp"
         android:layout_below="@id/ivProfileImage"
         android:background="@android:color/transparent"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:inputType="textEmailAddress|textEmailSubject"/>
 
 </RelativeLayout>

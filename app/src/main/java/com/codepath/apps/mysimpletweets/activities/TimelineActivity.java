@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
@@ -17,8 +18,10 @@ import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
+import com.codepath.apps.mysimpletweets.models.CacheManager;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.codepath.apps.mysimpletweets.utils.ConnectivityHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -39,6 +42,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
     private TweetsArrayAdapter aTweets;
     @InjectView(R.id.lvTweets) ListView lvTweets;
     @InjectView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @InjectView(R.id.pbLoading) ProgressBar progressBar;
 
     private long max_id;
     private User currentUser;
@@ -61,9 +65,9 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         aTweets = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(aTweets);
         client = TwitterApplication.getRestClient();
-        max_id = 0;
-        aTweets.clear();
+        aTweets.addAll(CacheManager.latestTweets());
         populateCurrentUser();
+        max_id = 0;
         populateTimeline();
 
         // Setup refresh listener which triggers new data loading
@@ -74,7 +78,6 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 max_id = 0;
-                aTweets.clear();
                 populateCurrentUser();
                 populateTimeline();
             }
@@ -91,7 +94,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 currentUser = User.fromJSON(response);
-                Log.d(TAG, "user populated: " + currentUser);
+                Log.d(TAG, "user populated: " + currentUser.getScreenName());
             }
 
             @Override
@@ -111,21 +114,35 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
     }
 
     private void populateTimeline() {
-        client.getHomeTimeline(max_id, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                aTweets.addAll(Tweet.fromJSON(json));
-                Tweet lastTweet = aTweets.getItem(aTweets.getCount() - 1);
-                max_id = lastTweet.getUid() - 1;
-//                Log.d(TAG, "max_id = " + max_id);
-                swipeContainer.setRefreshing(false);
-            }
+        if (!ConnectivityHelper.isNetworkAvailable(this)) {
+            ConnectivityHelper.notifyUserAboutNoInternetConnectivity(this);
+        } else {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            client.getHomeTimeline(max_id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                    if (max_id == 0) {
+                        aTweets.clear();
+                    }
+                    ArrayList<Tweet> responseTweets = Tweet.fromJSON(json);
+                    // Fire and forget
+                    CacheManager.saveTweets(responseTweets);
+                    aTweets.addAll(responseTweets);
+                    Tweet lastTweet = aTweets.getItem(aTweets.getCount() - 1);
+                    max_id = lastTweet.getUid() - 1;
+                    //                Log.d(TAG, "max_id = " + max_id);
+                    swipeContainer.setRefreshing(false);
+                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TAG, errorResponse.toString());
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.e(TAG, "Failed to call API: " + throwable);
+                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    ConnectivityHelper.notifyUserAboutAPIError(TimelineActivity.this);
+                }
+            });
+        }
     }
 
 
@@ -159,19 +176,27 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         tweet = tweet.trim();
         Log.d(TAG, "Posting tweet to Twitter: " + tweet);
         if (tweet.length() > 0){
-            client.postTweet(tweet, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    tweets.add(0, Tweet.fromJSON(response));
-                    aTweets.notifyDataSetChanged();
-                    Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_SHORT).show();
-                }
+            if (!ConnectivityHelper.isNetworkAvailable(this)) {
+                ConnectivityHelper.notifyUserAboutNoInternetConnectivity(this);
+            } else {
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                client.postTweet(tweet, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        tweets.add(0, Tweet.fromJSON(response));
+                        aTweets.notifyDataSetChanged();
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
+                        Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d(TAG, errorResponse.toString());
-                }
-            });
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Log.e(TAG, "Failed to call API: " + throwable);
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
+                        ConnectivityHelper.notifyUserAboutAPIError(TimelineActivity.this);
+                    }
+                });
+            }
         }
     }
 }

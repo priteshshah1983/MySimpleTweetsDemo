@@ -1,19 +1,50 @@
 package com.codepath.apps.mysimpletweets.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Tweet {
+@Table(name = "Tweets")
+public class Tweet extends Model{
 
+    @Column(name = "body")
     private String mBody;
+
+    // This is the unique id given by the server
+    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long mUid;
+
+    @Column(name = "createdAt")
     private String mCreatedAt;
+
+    @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User mUser;
+
+    @Column(name = "retweetCount")
     private int mRetweetCount;
+
+    @Column(name = "favoritesCount")
     private int mFavoritesCount;
+
+    // Make sure to have a default constructor for every ActiveAndroid model
+    public Tweet() {
+        super();
+    }
+
+    public Tweet(String body, long uid, String createdAt, User user, int retweetCount, int favoritesCount) {
+        mBody = body;
+        mUid = uid;
+        mCreatedAt = createdAt;
+        mUser = user;
+        mRetweetCount = retweetCount;
+        mFavoritesCount = favoritesCount;
+    }
 
     public int getRetweetCount() {
         return mRetweetCount;

@@ -10,4 +10,7 @@
     <string name="tweet_label">Tweet</string>
     <string name="whats_happening_label">What\'s happening?</string>
     <string name="tweet_posted_successfully">Tweet posted successfully!</string>
+    <string name="no_internet_connection_label">No internet connection!</string>
+    <string name="ok_label">OK</string>
+    <string name="api_failure_label">Failed to call API!</string>
 </resources>
