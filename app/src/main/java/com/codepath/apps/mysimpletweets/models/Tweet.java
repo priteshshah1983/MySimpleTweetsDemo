@@ -1,6 +1,10 @@
 package com.codepath.apps.mysimpletweets.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.activeandroid.Model;
+import com.activeandroid.TableInfo;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
@@ -11,7 +15,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 @Table(name = "Tweets")
-public class Tweet extends Model{
+public class Tweet extends Model implements Parcelable {
 
     @Column(name = "body")
     private String mBody;
@@ -129,4 +133,38 @@ public class Tweet extends Model{
 
         return tweets;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mBody);
+        dest.writeLong(this.mUid);
+        dest.writeString(this.mCreatedAt);
+        dest.writeParcelable(this.mUser, 0);
+        dest.writeInt(this.mRetweetCount);
+        dest.writeInt(this.mFavoritesCount);
+    }
+
+    private Tweet(Parcel in) {
+        this.mBody = in.readString();
+        this.mUid = in.readLong();
+        this.mCreatedAt = in.readString();
+        this.mUser = in.readParcelable(User.class.getClassLoader());
+        this.mRetweetCount = in.readInt();
+        this.mFavoritesCount = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 }

@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -32,6 +33,9 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+import butterknife.OnItemSelected;
 
 public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener {
 
@@ -198,5 +202,14 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
                 });
             }
         }
+    }
+
+    @SuppressWarnings("unused") // it's actually used, just injected by Butter Knife
+    @OnItemClick(R.id.lvTweets)
+    void onItemSelected(int position) {
+        Intent i = new Intent(TimelineActivity.this, TweetDetailsActivity.class);
+        Tweet tweet = tweets.get(position);
+        i.putExtra(TweetDetailsActivity.EXTRA_TWEET, tweet);
+        startActivity(i);
     }
 }
