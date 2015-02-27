@@ -1,10 +1,9 @@
 package com.codepath.apps.mysimpletweets.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,16 @@ import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterClient;
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.utils.ProfilePictureHelper;
-import com.makeramen.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -52,7 +51,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -71,7 +70,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         viewHolder.tvRetweetCount.setText(String.valueOf(tweet.getRetweetCount()));
         viewHolder.tvFavoriteCount.setText(String.valueOf(tweet.getFavoritesCount()));
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TwitterClient.TWITTER_DATE_FORMAT);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TwitterClient.TWITTER_DATE_FORMAT, Locale.US);
             simpleDateFormat.setLenient(true);
             Date date = simpleDateFormat.parse(tweet.getCreatedAt());
             String dateString = (String) DateUtils.getRelativeTimeSpanString(date.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
@@ -87,6 +86,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
                 .transform(ProfilePictureHelper.roundedCornersTranformation())
                 .into(viewHolder.ivProfileImage);
 
+        viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                intent.putExtra(ProfileActivity.EXTRA_USER, tweet.getUser());
+                getContext().startActivity(intent);
+            }
+        });
+
         // Return the completed view to render on screen
         return convertView;
     }
@@ -100,6 +108,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         dateString = dateString.replace(" minute", "m");
         dateString = dateString.replace(" hours", "h");
         dateString = dateString.replace(" hour", "h");
+        dateString = dateString.replace(" days", "d");
+        dateString = dateString.replace(" day", "d");
 
         return dateString;
     }

@@ -2,14 +2,15 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.codepath.apps.mysimpletweets.com.codepath.apps.mysimpletweets.activities.TimelineActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
-
     <item
         android:id="@+id/miTweet"
         app:showAsAction="ifRoom"
         android:title="@string/tweet_label"
         android:icon="@drawable/tweet" />
+
+    <item
+        android:id="@+id/miProfile"
+        app:showAsAction="ifRoom"
+        android:title="@string/view_profile_label"
+        android:icon="@drawable/profile" />
 </menu>
