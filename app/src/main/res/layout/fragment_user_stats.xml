@@ -27,7 +27,7 @@
             android:textSize="14sp"/>
 
         <View
-            android:layout_width="1px"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/light_gray"/>
 
@@ -43,7 +43,7 @@
             android:textSize="14sp"/>
 
         <View
-            android:layout_width="1px"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/light_gray"/>
 
@@ -70,12 +70,12 @@
             android:paddingBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_gray"
             android:text="@string/tweets_label"
             android:textSize="14sp"/>
 
         <View
-            android:layout_width="1px"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/light_gray"/>
 
@@ -85,12 +85,12 @@
             android:paddingBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_gray"
             android:text="@string/following_label"
             android:textSize="14sp"/>
 
         <View
-            android:layout_width="1px"
+            android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/light_gray"/>
 
@@ -100,7 +100,7 @@
             android:paddingBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/dark_gray"
             android:text="@string/followers_label"
             android:textSize="14sp"/>
 
@@ -111,7 +111,7 @@
     android:id="@+id/vStatsSeparator"
     android:layout_below="@id/tlStats"
     android:layout_width="match_parent"
-    android:layout_height="1px"
+    android:layout_height="1dp"
     android:background="@color/light_gray"/>
 
 <View
@@ -124,7 +124,7 @@
 <View
     android:layout_below="@id/vSeparatorBelowStatsSeparator"
     android:layout_width="match_parent"
-    android:layout_height="1px"
+    android:layout_height="1dp"
     android:background="@color/light_gray"/>
 
 </RelativeLayout>
