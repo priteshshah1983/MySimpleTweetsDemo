@@ -42,6 +42,10 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ButterKnife.inject(this);
+
+        // Clear the title
+        getSupportActionBar().setTitle("");
+
         client = TwitterApplication.getRestClient();
         viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
         tabStrip.setViewPager(viewPager);
