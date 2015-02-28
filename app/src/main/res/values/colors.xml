@@ -5,4 +5,7 @@
     <color name="black">#000000</color>
     <color name="light_gray">#CCCCCC</color>
     <color name="dark_gray">#959595</color>
+    <color name="blue_bayoux">#67767F</color>
+    <color name="french_gray">#B9C0C4</color>
+    <color name="black_haze">#F6F9FB</color>
 </resources>

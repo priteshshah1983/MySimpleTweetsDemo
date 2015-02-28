@@ -35,6 +35,12 @@ public class User extends Model implements Parcelable {
     @Column(name = "friendsCount")
     private int mFriendsCount;
 
+    @Column(name = "location")
+    private String mLocation;
+
+    @Column (name = "tweetsCount")
+    private int mTweetsCount;
+
     public String getName() {
         return mName;
     }
@@ -91,6 +97,22 @@ public class User extends Model implements Parcelable {
         mFriendsCount = friendsCount;
     }
 
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
+
+    public int getTweetsCount() {
+        return mTweetsCount;
+    }
+
+    public void setTweetsCount(int tweetsCount) {
+        mTweetsCount = tweetsCount;
+    }
+
     public static User fromJSON(JSONObject jsonObject) {
         User user = new User();
         try {
@@ -101,6 +123,8 @@ public class User extends Model implements Parcelable {
             user.setTagLine(jsonObject.getString("description"));
             user.setFollowersCount(jsonObject.getInt("followers_count"));
             user.setFriendsCount(jsonObject.getInt("friends_count"));
+            user.setLocation(jsonObject.getString("location"));
+            user.setTweetsCount(jsonObject.getInt("statuses_count"));
         } catch (JSONException e) {
             user = null;
             e.printStackTrace();
@@ -119,6 +143,11 @@ public class User extends Model implements Parcelable {
         dest.writeLong(this.mUid);
         dest.writeString(this.mScreenName);
         dest.writeString(this.mProfileImageUrl);
+        dest.writeString(this.mTagLine);
+        dest.writeInt(this.mFollowersCount);
+        dest.writeInt(this.mFriendsCount);
+        dest.writeString(this.mLocation);
+        dest.writeInt(this.mTweetsCount);
     }
 
     public User() {
@@ -129,6 +158,11 @@ public class User extends Model implements Parcelable {
         this.mUid = in.readLong();
         this.mScreenName = in.readString();
         this.mProfileImageUrl = in.readString();
+        this.mTagLine = in.readString();
+        this.mFollowersCount = in.readInt();
+        this.mFriendsCount = in.readInt();
+        this.mLocation = in.readString();
+        this.mTweetsCount = in.readInt();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

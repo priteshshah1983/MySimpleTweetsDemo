@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+<TableLayout
+    android:id="@+id/tlStats"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="0,2,4">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTweetsCount"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="4,154"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/tvFriendsCount"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="3,579"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/tvFollowersCount"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="246"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTweetsCountText"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_gray"
+            android:text="@string/tweets_label"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/tvFriendsCountText"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_gray"
+            android:text="@string/following_label"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/tvFollowersCountText"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_gray"
+            android:text="@string/followers_label"
+            android:textSize="14sp"/>
+
+    </TableRow>
+</TableLayout>
+
+<View
+    android:id="@+id/vStatsSeparator"
+    android:layout_below="@id/tlStats"
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/light_gray"/>
+
+<View
+    android:id="@+id/vSeparatorBelowStatsSeparator"
+    android:layout_below="@id/vStatsSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="5dp"
+    android:background="@color/black_haze"/>
+
+<View
+    android:layout_below="@id/vSeparatorBelowStatsSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/light_gray"/>
+
+</RelativeLayout>

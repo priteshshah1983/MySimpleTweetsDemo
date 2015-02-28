@@ -17,6 +17,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="retweets_label">RETWEETS</string>
     <string name="favorites_label">FAVORITES</string>
+    <string name="tweets_label">TWEETS</string>
+    <string name="followers_label">FOLLOWERS</string>
+    <string name="following_label">FOLLOWING</string>
     <string name="retweet_label">Retweet</string>
     <string name="reply_label">Reply</string>
     <string name="favorite_label">Favorite</string>

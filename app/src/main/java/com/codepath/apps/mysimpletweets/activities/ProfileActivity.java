@@ -2,17 +2,17 @@ package com.codepath.apps.mysimpletweets.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.fragments.UserHeaderFragment;
+import com.codepath.apps.mysimpletweets.adapters.ProfilePagerAdapter;
+import com.codepath.apps.mysimpletweets.fragments.UserStatsFragment;
 import com.codepath.apps.mysimpletweets.fragments.UserTimelineFragment;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,8 +21,8 @@ public class ProfileActivity extends ActionBarActivity {
 
     public static final String EXTRA_USER = "com.codepath.apps.mysimpletweets.user";
 
-    @InjectView(R.id.flUserHeaderContainer)
-    FrameLayout flUserHeaderContainer;
+    @InjectView(R.id.viewpager)
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +30,17 @@ public class ProfileActivity extends ActionBarActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.inject(this);
 
-        ViewGroup.LayoutParams params = flUserHeaderContainer.getLayoutParams();
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, getResources().getDisplayMetrics());
-        params.height = height;
-
         User user = getIntent().getParcelableExtra(EXTRA_USER);
+        viewPager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager(), user));
+
+        CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
+
         if (savedInstanceState == null) {
-            UserHeaderFragment userHeaderFragment = UserHeaderFragment.newInstance(user);
+            UserStatsFragment userStatsFragment = UserStatsFragment.newInstance(user);
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(user);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flUserHeaderContainer, userHeaderFragment);
+            ft.replace(R.id.flStatsContainer, userStatsFragment);
             ft.replace(R.id.flContainer, userTimelineFragment);
             ft.commit();
         }

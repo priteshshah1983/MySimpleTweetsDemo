@@ -17,4 +17,15 @@ public class ProfilePictureHelper {
 
         return transformation;
     }
+
+    public static Transformation roundedCornersTranformationWithBorder(int color) {
+        Transformation transformation = new RoundedTransformationBuilder()
+                .borderColor(color)
+                .borderWidthDp(5)
+                .cornerRadiusDp(5)
+                .oval(false)
+                .build();
+
+        return transformation;
+    }
 }
