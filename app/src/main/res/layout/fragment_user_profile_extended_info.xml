@@ -6,6 +6,7 @@
 
     <TextView
         android:id="@+id/tvOccupation"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -17,6 +18,7 @@
 
     <TextView
         android:id="@+id/tvLocation"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

@@ -19,6 +19,8 @@ import butterknife.InjectView;
 
 public class ProfileActivity extends ActionBarActivity {
 
+    private static final String TAG = ProfileActivity.class.getName();
+
     public static final String EXTRA_USER = "com.codepath.apps.mysimpletweets.user";
 
     @InjectView(R.id.viewpager)

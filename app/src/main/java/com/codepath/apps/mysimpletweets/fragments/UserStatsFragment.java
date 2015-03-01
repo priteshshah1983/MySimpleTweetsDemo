@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.activities.FollowersActivity;
+import com.codepath.apps.mysimpletweets.activities.FollowingActivity;
+import com.codepath.apps.mysimpletweets.activities.PeopleActivity;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.LocaleHelper;
 
@@ -47,6 +51,26 @@ public class UserStatsFragment extends Fragment {
         tvTweetsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getTweetsCount()));
         tvFollowersCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFollowersCount()));
         tvFriendsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFriendsCount()));
+
+        // FIXME: This is incorrect!
+        tvFriendsCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FollowingActivity.class);
+                intent.putExtra(EXTRA_USER, getArguments().getParcelable(EXTRA_USER));
+                startActivity(intent);
+            }
+        });
+
+        // FIXME: This is incorrect!
+        tvFollowersCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FollowersActivity.class);
+                intent.putExtra(EXTRA_USER, getArguments().getParcelable(EXTRA_USER));
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

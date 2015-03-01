@@ -7,8 +7,11 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 @Table(name = "Users")
 public class User extends Model implements Parcelable {
@@ -130,6 +133,26 @@ public class User extends Model implements Parcelable {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public static ArrayList<User> fromJSON(JSONArray jsonArray) {
+        ArrayList<User> users = new ArrayList<>(jsonArray.length());
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject userJSON = null;
+            try {
+                userJSON = jsonArray.getJSONObject(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+
+            User user = User.fromJSON(userJSON);
+            if (user != null) {
+                users.add(user);
+            }
+        }
+
+        return users;
     }
 
     @Override
