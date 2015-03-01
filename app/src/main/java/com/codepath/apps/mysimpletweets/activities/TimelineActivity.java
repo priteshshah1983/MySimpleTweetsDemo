@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.R;
@@ -15,7 +17,9 @@ import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.TweetsPagerAdapter;
 import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.codepath.apps.mysimpletweets.utils.ConnectivityHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -36,6 +40,9 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
 
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabStrip;
+
+    @InjectView(R.id.pbLoading)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,36 +112,31 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
 
     @Override
     public void onTweet(String tweet) {
-
-    }
-
-//    @Override
-//    public void onTweet(String tweet) {
-//        tweet = tweet.trim();
-//        Log.d(TAG, "Posting tweet to Twitter: " + tweet);
-//        if (tweet.length() > 0){
-//            if (!ConnectivityHelper.isNetworkAvailable(this)) {
-//                ConnectivityHelper.notifyUserAboutNoInternetConnectivity(this);
-//            } else {
-//                progressBar.setVisibility(ProgressBar.VISIBLE);
-//                client.postTweet(tweet, new JsonHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        tweet = tweet.trim();
+        Log.d(TAG, "Posting tweet to Twitter: " + tweet);
+        if (tweet.length() > 0){
+            if (!ConnectivityHelper.isNetworkAvailable(this)) {
+                ConnectivityHelper.notifyUserAboutNoInternetConnectivity(this);
+            } else {
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                client.postTweet(tweet, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 //                        tweets.add(0, Tweet.fromJSON(response));
 //                        aTweets.notifyDataSetChanged();
-//                        progressBar.setVisibility(ProgressBar.INVISIBLE);
-//                        Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_LONG).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                        Log.e(TAG, "Failed to call API: " + throwable);
-//                        progressBar.setVisibility(ProgressBar.INVISIBLE);
-//                        ConnectivityHelper.notifyUserAboutAPIError(TimelineActivity.this);
-//                    }
-//                });
-//            }
-//        }
-//    }
-//
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
+                        Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Log.e(TAG, "Failed to call API: " + throwable);
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
+                        ConnectivityHelper.notifyUserAboutAPIError(TimelineActivity.this);
+                    }
+                });
+            }
+        }
+    }
+
 }

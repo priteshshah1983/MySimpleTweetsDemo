@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -17,7 +18,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProfileActivity extends ActionBarActivity {
+public class ProfileActivity extends ActionBarActivity implements UserStatsFragment.UserStatsFragmentListener {
 
     private static final String TAG = ProfileActivity.class.getName();
 
@@ -69,5 +70,19 @@ public class ProfileActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onShowFollowers(User user) {
+        Intent intent = new Intent(this, FollowersActivity.class);
+        intent.putExtra(EXTRA_USER, user);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onShowFriends(User user) {
+        Intent intent = new Intent(this, FriendsActivity.class);
+        intent.putExtra(EXTRA_USER, user);
+        startActivity(intent);
     }
 }

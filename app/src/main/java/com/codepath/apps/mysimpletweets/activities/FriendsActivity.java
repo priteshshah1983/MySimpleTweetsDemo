@@ -7,9 +7,9 @@ import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.fragments.FollowingFragment;
 import com.codepath.apps.mysimpletweets.models.User;
 
-public class FollowingActivity extends PeopleActivity {
+public class FriendsActivity extends PeopleActivity {
 
-    private static final String TAG = FollowingActivity.class.getName();
+    private static final String TAG = FriendsActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

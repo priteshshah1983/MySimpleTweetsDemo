@@ -1,6 +1,5 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.activities.FollowersActivity;
-import com.codepath.apps.mysimpletweets.activities.FollowingActivity;
-import com.codepath.apps.mysimpletweets.activities.PeopleActivity;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.LocaleHelper;
 
@@ -35,6 +31,11 @@ public class UserStatsFragment extends Fragment {
     @InjectView(R.id.tvFriendsCount)
     TextView tvFriendsCount;
 
+    public interface UserStatsFragmentListener {
+        void onShowFollowers(User user);
+        void onShowFriends(User user);
+    }
+
     public static UserStatsFragment newInstance(User user) {
         UserStatsFragment fragment = new UserStatsFragment();
         Bundle arguments = new Bundle();
@@ -47,28 +48,24 @@ public class UserStatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_stats, parent, false);
         ButterKnife.inject(this, view);
-        User user = getArguments().getParcelable(EXTRA_USER);
+        final User user = getArguments().getParcelable(EXTRA_USER);
         tvTweetsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getTweetsCount()));
         tvFollowersCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFollowersCount()));
         tvFriendsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFriendsCount()));
 
-        // FIXME: This is incorrect!
         tvFriendsCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FollowingActivity.class);
-                intent.putExtra(EXTRA_USER, getArguments().getParcelable(EXTRA_USER));
-                startActivity(intent);
+                UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
+                userStatsFragmentListener.onShowFriends(user);
             }
         });
 
-        // FIXME: This is incorrect!
         tvFollowersCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FollowersActivity.class);
-                intent.putExtra(EXTRA_USER, getArguments().getParcelable(EXTRA_USER));
-                startActivity(intent);
+                UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
+                userStatsFragmentListener.onShowFollowers(user);
             }
         });
 

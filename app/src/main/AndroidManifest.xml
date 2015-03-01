@@ -67,7 +67,7 @@
             android:name=".activities.PeopleActivity" >
         </activity>
         <activity
-            android:name=".activities.FollowingActivity"
+            android:name=".activities.FriendsActivity"
             android:label="@string/following_label" >
         </activity>
         <activity
