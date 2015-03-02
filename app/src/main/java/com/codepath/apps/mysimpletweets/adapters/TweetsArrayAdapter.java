@@ -46,13 +46,20 @@ import butterknife.InjectView;
 
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
+    private final TweetsArrayAdapterListener listener;
+
+    public interface TweetsArrayAdapterListener {
+        void onTweetReply(Tweet tweet);
+    }
+
     private TwitterClient client;
 
     private static final String TAG = TweetsArrayAdapter.class.getName();
 
-    public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
+    public TweetsArrayAdapter(Context context, List<Tweet> tweets, TweetsArrayAdapterListener listener) {
         super(context, R.layout.item_tweet, tweets);
         client = TwitterApplication.getRestClient();
+        this.listener = listener;
     }
 
     // View lookup cache
@@ -61,6 +68,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         @InjectView(R.id.tvName) TextView tvName;
         @InjectView(R.id.tvUserName) TextView tvUserName;
         @InjectView(R.id.tvBody) TextView tvBody;
+        @InjectView(R.id.tvReply) TextView tvReply;
         @InjectView(R.id.tvRetweetCount) TextView tvRetweetCount;
         @InjectView(R.id.tvFavoriteCount) TextView tvFavoriteCount;
         @InjectView(R.id.tvTimestamp) TextView tvTimestamp;
@@ -203,6 +211,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
                             }
                         });
                     }
+                }
+            }
+        });
+
+        viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != TweetsArrayAdapter.this.listener) {
+                    TweetsArrayAdapter.this.listener.onTweetReply(tweet);
                 }
             }
         });

@@ -15,6 +15,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
+import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.adapters.TweetsPagerAdapter;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
@@ -30,7 +31,7 @@ import org.json.JSONObject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener, TweetsListFragment.TweetsListFragmentListener {
+public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener, TweetsListFragment.TweetsListFragmentListener, TweetsArrayAdapter.TweetsArrayAdapterListener {
 
     private static final String TAG = TimelineActivity.class.getName();
 
@@ -105,7 +106,6 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         }
     }
 
-    // ActivityOne.java, time to handle the result of the sub-activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
@@ -162,5 +162,10 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         Intent i = new Intent(this, TweetDetailsActivity.class);
         i.putExtra(TweetDetailsActivity.EXTRA_TWEET, tweet);
         startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    public void onTweetReply(Tweet tweet) {
+        showTweetDialog(tweet);
     }
 }

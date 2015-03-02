@@ -90,7 +90,11 @@ public abstract class TweetsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tweets = new ArrayList<>();
-        aTweets = new TweetsArrayAdapter(getActivity(), tweets);
+        if (getActivity() instanceof TweetsArrayAdapter.TweetsArrayAdapterListener) {
+            aTweets = new TweetsArrayAdapter(getActivity(), tweets, ((TweetsArrayAdapter.TweetsArrayAdapterListener)getActivity()));
+        } else {
+            aTweets = new TweetsArrayAdapter(getActivity(), tweets, null);
+        }
         client = TwitterApplication.getRestClient();
     }
 
