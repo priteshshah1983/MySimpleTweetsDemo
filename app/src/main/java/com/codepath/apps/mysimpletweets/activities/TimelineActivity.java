@@ -17,6 +17,7 @@ import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.TweetsPagerAdapter;
 import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
+import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.ConnectivityHelper;
@@ -28,12 +29,14 @@ import org.json.JSONObject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener {
+public class TimelineActivity extends ActionBarActivity implements TweetFragment.TweetFragmentListener, TweetsListFragment.TweetsListFragmentListener {
 
     private static final String TAG = TimelineActivity.class.getName();
 
+    private final int REQUEST_CODE = 20;
+
     private TwitterClient client;
-    private User currentUser;
+    public User currentUser;
 
     @InjectView(R.id.viewpager)
     ViewPager viewPager;
@@ -88,7 +91,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.miTweet:
-                showTweetDialog();
+                showTweetDialog(null);
                 return true;
             case R.id.miProfile:
                 viewProfile();
@@ -98,9 +101,20 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         }
     }
 
-    private void showTweetDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        TweetFragment tweetFragment = TweetFragment.newInstance(currentUser);
+    // ActivityOne.java, time to handle the result of the sub-activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name value from result extras
+            Tweet tweet = data.getExtras().getParcelable(TweetDetailsActivity.EXTRA_TWEET);
+            showTweetDialog(tweet);
+        }
+    }
+
+    private void showTweetDialog(Tweet tweet) {
+        FragmentManager fragmentManager = getFragmentManager();
+        TweetFragment tweetFragment = TweetFragment.newInstance(currentUser, tweet);
         tweetFragment.show(fragmentManager, "fragment_tweet");
     }
 
@@ -139,4 +153,10 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         }
     }
 
+    @Override
+    public void onTweetClicked(Tweet tweet) {
+        Intent i = new Intent(this, TweetDetailsActivity.class);
+        i.putExtra(TweetDetailsActivity.EXTRA_TWEET, tweet);
+        startActivityForResult(i, REQUEST_CODE);
+    }
 }

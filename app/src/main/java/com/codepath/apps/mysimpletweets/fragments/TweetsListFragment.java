@@ -1,6 +1,5 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.widget.ProgressBar;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
-import com.codepath.apps.mysimpletweets.activities.TweetDetailsActivity;
 import com.codepath.apps.mysimpletweets.adapters.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -35,6 +33,10 @@ public abstract class TweetsListFragment extends Fragment {
     @InjectView(R.id.lvTweets) ListView lvTweets;
     @InjectView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @InjectView(R.id.pbLoading) ProgressBar progressBar;
+
+    public interface TweetsListFragmentListener {
+        void onTweetClicked(Tweet tweet);
+    }
 
     public long max_id;
 
@@ -71,6 +73,7 @@ public abstract class TweetsListFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
         return view;
     }
 
@@ -94,9 +97,8 @@ public abstract class TweetsListFragment extends Fragment {
     @SuppressWarnings("unused") // it's actually used, just injected by Butter Knife
     @OnItemClick(R.id.lvTweets)
     void onItemSelected(int position) {
-        Intent i = new Intent(getActivity(), TweetDetailsActivity.class);
+        TweetsListFragmentListener tweetsListFragmentListener = (TweetsListFragmentListener) getActivity();
         Tweet tweet = tweets.get(position);
-        i.putExtra(TweetDetailsActivity.EXTRA_TWEET, tweet);
-        startActivity(i);
+        tweetsListFragmentListener.onTweetClicked(tweet);
     }
 }

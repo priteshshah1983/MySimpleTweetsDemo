@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.ProfilePictureHelper;
 import com.squareup.picasso.Picasso;
@@ -26,6 +27,7 @@ public class TweetFragment extends DialogFragment {
     private static final String TAG = "TweetFragment";
 
     public static final String EXTRA_USER = "com.codepath.apps.mysimpletweets.user";
+    public static final String EXTRA_TWEET = "com.codepath.apps.mysimpletweets.tweet";
 
     private static final int TWEET_MAX_CHARACTER_COUNT = 140;
 
@@ -42,10 +44,11 @@ public class TweetFragment extends DialogFragment {
         // Empty constructor required for DialogFragment
     }
 
-    public static TweetFragment newInstance(User user) {
+    public static TweetFragment newInstance(User user, Tweet tweet) {
         TweetFragment fragment = new TweetFragment();
         Bundle arguments = new Bundle();
         arguments.putParcelable(EXTRA_USER, user);
+        arguments.putParcelable(EXTRA_TWEET, tweet);
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.TweetDialog);
         fragment.setArguments(arguments);
         return fragment;
@@ -82,6 +85,7 @@ public class TweetFragment extends DialogFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             User user = bundle.getParcelable(EXTRA_USER);
+            Tweet tweet = bundle.getParcelable(EXTRA_TWEET);
             Picasso.with(view.getContext())
                     .load(user.getProfileImageUrl())
                     .fit()
@@ -89,6 +93,10 @@ public class TweetFragment extends DialogFragment {
                     .into(ivProfileImage);
             tvName.setText(user.getName());
             tvUserName.setText("@" + user.getScreenName());
+
+            if (tweet != null) {
+                etTweet.setText("@" + tweet.getUser().getScreenName());
+            }
         }
         getDialog().setTitle(String.valueOf(TWEET_MAX_CHARACTER_COUNT));
         return view;

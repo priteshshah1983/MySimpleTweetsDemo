@@ -36,18 +36,15 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "favoritesCount")
     private int mFavoritesCount;
 
+    @Column(name = "favorited")
+    private boolean mFavorited;
+
+    @Column(name = "retweeted")
+    private boolean mRetweeted;
+
     // Make sure to have a default constructor for every ActiveAndroid model
     public Tweet() {
         super();
-    }
-
-    public Tweet(String body, long uid, String createdAt, User user, int retweetCount, int favoritesCount) {
-        mBody = body;
-        mUid = uid;
-        mCreatedAt = createdAt;
-        mUser = user;
-        mRetweetCount = retweetCount;
-        mFavoritesCount = favoritesCount;
     }
 
     public int getRetweetCount() {
@@ -98,6 +95,22 @@ public class Tweet extends Model implements Parcelable {
         mUser = user;
     }
 
+    public boolean isFavorited() {
+        return mFavorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        mFavorited = favorited;
+    }
+
+    public boolean isRetweeted() {
+        return mRetweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        mRetweeted = retweeted;
+    }
+
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
         try {
@@ -107,6 +120,8 @@ public class Tweet extends Model implements Parcelable {
             tweet.setRetweetCount(jsonObject.getInt("retweet_count"));
             tweet.setFavoritesCount(jsonObject.getInt("favorite_count"));
             tweet.setUser(User.fromJSON(jsonObject.getJSONObject("user")));
+            tweet.setFavorited(jsonObject.getBoolean("favorited"));
+            tweet.setRetweeted(jsonObject.getBoolean("retweeted"));
         } catch (JSONException e) {
             tweet = null;
             e.printStackTrace();
@@ -147,6 +162,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeParcelable(this.mUser, 0);
         dest.writeInt(this.mRetweetCount);
         dest.writeInt(this.mFavoritesCount);
+        dest.writeByte(mFavorited ? (byte) 1 : (byte) 0);
+        dest.writeByte(mRetweeted ? (byte) 1 : (byte) 0);
     }
 
     private Tweet(Parcel in) {
@@ -156,9 +173,11 @@ public class Tweet extends Model implements Parcelable {
         this.mUser = in.readParcelable(User.class.getClassLoader());
         this.mRetweetCount = in.readInt();
         this.mFavoritesCount = in.readInt();
+        this.mFavorited = in.readByte() != 0;
+        this.mRetweeted = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
         public Tweet createFromParcel(Parcel source) {
             return new Tweet(source);
         }

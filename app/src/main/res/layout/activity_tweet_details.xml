@@ -107,6 +107,7 @@
         android:paddingBottom="10dp">
 
         <ImageView
+            android:id="@+id/ivReply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/reply"
@@ -114,6 +115,7 @@
             android:contentDescription="@string/reply_label"/>
 
         <ImageView
+            android:id="@+id/ivRetweet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/retweet"
@@ -121,6 +123,7 @@
             android:contentDescription="@string/retweet_label"/>
 
         <ImageView
+            android:id="@+id/ivFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/favorite"
