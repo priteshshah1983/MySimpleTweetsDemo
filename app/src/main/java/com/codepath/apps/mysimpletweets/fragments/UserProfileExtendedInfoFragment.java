@@ -40,8 +40,10 @@ public class UserProfileExtendedInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile_extended_info, parent, false);
         ButterKnife.inject(this, view);
         User user = getArguments().getParcelable(EXTRA_USER);
-        tvOccupation.setText(user.getTagLine());
-        tvLocation.setText(user.getLocation());
+        if (null != user) {
+            tvOccupation.setText(user.getTagLine());
+            tvLocation.setText(user.getLocation());
+        }
 
         return view;
     }

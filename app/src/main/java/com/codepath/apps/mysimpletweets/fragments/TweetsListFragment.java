@@ -15,9 +15,11 @@ import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.EndlessScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
+import com.codepath.apps.mysimpletweets.models.CacheManager;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,6 +43,7 @@ public abstract class TweetsListFragment extends Fragment {
     public long max_id;
 
     public abstract void populateTimeline();
+    public abstract List<Tweet> latestTweets();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public abstract class TweetsListFragment extends Fragment {
             aTweets = new TweetsArrayAdapter(getActivity(), tweets, null);
         }
         client = TwitterApplication.getRestClient();
+        aTweets.addAll(latestTweets());
     }
 
     @SuppressWarnings("unused") // it's actually used, just injected by Butter Knife

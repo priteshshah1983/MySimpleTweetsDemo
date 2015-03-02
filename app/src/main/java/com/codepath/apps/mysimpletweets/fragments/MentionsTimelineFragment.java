@@ -3,6 +3,8 @@ package com.codepath.apps.mysimpletweets.fragments;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.codepath.apps.mysimpletweets.models.CacheManager;
+import com.codepath.apps.mysimpletweets.models.TimelineType;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.utils.ConnectivityHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -12,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
 
@@ -35,7 +38,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                     }
                     ArrayList<Tweet> responseTweets = Tweet.fromJSON(json);
                     // Fire and forget
-//                    CacheManager.saveTweets(responseTweets);
+                    CacheManager.saveTweets(responseTweets, TimelineType.MENTIONS);
                     aTweets.addAll(responseTweets);
                     Tweet lastTweet = aTweets.getItem(aTweets.getCount() - 1);
                     max_id = lastTweet.getUid() - 1;
@@ -52,6 +55,11 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                 }
             });
         }
+    }
+
+    @Override
+    public List<Tweet> latestTweets() {
+        return CacheManager.latestTweets(TimelineType.MENTIONS);
     }
 
 }

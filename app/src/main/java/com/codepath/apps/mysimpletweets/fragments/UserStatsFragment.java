@@ -49,26 +49,27 @@ public class UserStatsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_stats, parent, false);
         ButterKnife.inject(this, view);
         final User user = getArguments().getParcelable(EXTRA_USER);
-        tvTweetsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getTweetsCount()));
-        tvFollowersCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFollowersCount()));
-        tvFriendsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFriendsCount()));
+        if (null != user) {
+            tvTweetsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getTweetsCount()));
+            tvFollowersCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFollowersCount()));
+            tvFriendsCount.setText(LocaleHelper.localizedNumber(getActivity(), user.getFriendsCount()));
 
-        tvFriendsCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
-                userStatsFragmentListener.onShowFriends(user);
-            }
-        });
+            tvFriendsCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
+                    userStatsFragmentListener.onShowFriends(user);
+                }
+            });
 
-        tvFollowersCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
-                userStatsFragmentListener.onShowFollowers(user);
-            }
-        });
-
+            tvFollowersCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserStatsFragmentListener userStatsFragmentListener = (UserStatsFragmentListener) getActivity();
+                    userStatsFragmentListener.onShowFollowers(user);
+                }
+            });
+        }
         return view;
     }
 }

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.codepath.apps.mysimpletweets.models.CacheManager;
+import com.codepath.apps.mysimpletweets.models.TimelineType;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.utils.ConnectivityHelper;
@@ -14,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserTimelineFragment extends TweetsListFragment {
 
@@ -43,7 +46,7 @@ public class UserTimelineFragment extends TweetsListFragment {
                     }
                     ArrayList<Tweet> responseTweets = Tweet.fromJSON(json);
                     // Fire and forget
-//                    CacheManager.saveTweets(responseTweets);
+                    CacheManager.saveTweets(responseTweets, TimelineType.USER);
                     aTweets.addAll(responseTweets);
                     Tweet lastTweet = aTweets.getItem(aTweets.getCount() - 1);
                     max_id = lastTweet.getUid() - 1;
@@ -62,4 +65,8 @@ public class UserTimelineFragment extends TweetsListFragment {
         }
     }
 
+    @Override
+    public List<Tweet> latestTweets() {
+        return CacheManager.latestTweets(TimelineType.USER);
+    }
 }

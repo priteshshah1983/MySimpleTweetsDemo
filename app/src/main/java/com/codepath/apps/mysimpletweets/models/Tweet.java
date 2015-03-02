@@ -42,6 +42,9 @@ public class Tweet extends Model implements Parcelable {
     @Column(name = "retweeted")
     private boolean mRetweeted;
 
+    @Column(name = "timelineType")
+    private TimelineType mTimelineType;
+
     // Make sure to have a default constructor for every ActiveAndroid model
     public Tweet() {
         super();
@@ -109,6 +112,14 @@ public class Tweet extends Model implements Parcelable {
 
     public void setRetweeted(boolean retweeted) {
         mRetweeted = retweeted;
+    }
+
+    public TimelineType getTimelineType() {
+        return mTimelineType;
+    }
+
+    public void setTimelineType(TimelineType timelineType) {
+        mTimelineType = timelineType;
     }
 
     public static Tweet fromJSON(JSONObject jsonObject) {

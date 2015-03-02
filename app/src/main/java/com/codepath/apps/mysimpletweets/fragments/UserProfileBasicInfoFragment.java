@@ -47,13 +47,15 @@ public class UserProfileBasicInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile_basic_info, parent, false);
         ButterKnife.inject(this, view);
         User user = getArguments().getParcelable(EXTRA_USER);
-        tvName.setText(user.getName());
-        tvUserName.setText("@" + user.getScreenName());
-        Picasso.with(getActivity())
-                .load(user.getProfileImageUrl())
-                .fit()
-                .transform(ProfilePictureHelper.roundedCornersTranformationWithBorder(Color.WHITE))
-                .into(ivProfileImage);
+        if (null != user) {
+            tvName.setText(user.getName());
+            tvUserName.setText("@" + user.getScreenName());
+            Picasso.with(getActivity())
+                    .load(user.getProfileImageUrl())
+                    .fit()
+                    .transform(ProfilePictureHelper.roundedCornersTranformationWithBorder(Color.WHITE))
+                    .into(ivProfileImage);
+        }
 
         return view;
     }

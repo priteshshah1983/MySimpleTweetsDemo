@@ -66,7 +66,6 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         tabStrip.setViewPager(viewPager);
 
         populateCurrentUser();
-//        aTweets.addAll(CacheManager.latestTweets());
     }
 
     private void populateCurrentUser() {
