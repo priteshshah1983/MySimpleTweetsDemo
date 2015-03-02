@@ -101,4 +101,9 @@ public abstract class TweetsListFragment extends Fragment {
         Tweet tweet = tweets.get(position);
         tweetsListFragmentListener.onTweetClicked(tweet);
     }
+
+    public void add(int index, Tweet tweet) {
+        tweets.add(index, tweet);
+        aTweets.notifyDataSetChanged();
+    }
 }

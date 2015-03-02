@@ -2,12 +2,11 @@ package com.codepath.apps.mysimpletweets.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
 
-public class TweetsPagerAdapter extends FragmentPagerAdapter {
+public class TweetsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     private String tabTitles[] = {"Home", "Mentions"};
 

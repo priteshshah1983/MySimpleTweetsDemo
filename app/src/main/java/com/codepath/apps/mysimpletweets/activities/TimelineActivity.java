@@ -16,6 +16,7 @@ import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.adapters.TweetsPagerAdapter;
+import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.TweetFragment;
 import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -38,6 +39,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
     private TwitterClient client;
     public User currentUser;
 
+    private TweetsPagerAdapter mTweetsPagerAdapter;
+
     @InjectView(R.id.viewpager)
     ViewPager viewPager;
 
@@ -57,7 +60,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
         getSupportActionBar().setTitle("");
 
         client = TwitterApplication.getRestClient();
-        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        mTweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mTweetsPagerAdapter);
         tabStrip.setViewPager(viewPager);
 
         populateCurrentUser();
@@ -136,8 +140,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetFragment
                 client.postTweet(tweet, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                        tweets.add(0, Tweet.fromJSON(response));
-//                        aTweets.notifyDataSetChanged();
+                        HomeTimelineFragment homeTimelineFragment = (HomeTimelineFragment) mTweetsPagerAdapter.getRegisteredFragment(0);
+                        homeTimelineFragment.add(0, Tweet.fromJSON(response));
                         progressBar.setVisibility(ProgressBar.INVISIBLE);
                         Toast.makeText(TimelineActivity.this, R.string.tweet_posted_successfully, Toast.LENGTH_LONG).show();
                     }

@@ -83,6 +83,7 @@ public class TweetFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_tweet, container);
         ButterKnife.inject(this, view);
         Bundle bundle = getArguments();
+        getDialog().setTitle(String.valueOf(TWEET_MAX_CHARACTER_COUNT));
         if (bundle != null) {
             User user = bundle.getParcelable(EXTRA_USER);
             Tweet tweet = bundle.getParcelable(EXTRA_TWEET);
@@ -96,9 +97,10 @@ public class TweetFragment extends DialogFragment {
 
             if (tweet != null) {
                 etTweet.setText("@" + tweet.getUser().getScreenName());
+                // Used to update the character count
+                displayTweetCharacterCount("", 0, 0, 0);
             }
         }
-        getDialog().setTitle(String.valueOf(TWEET_MAX_CHARACTER_COUNT));
         return view;
     }
 }
