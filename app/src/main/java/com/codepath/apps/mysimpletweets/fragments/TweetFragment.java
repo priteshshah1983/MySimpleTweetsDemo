@@ -1,7 +1,7 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
